@@ -1,0 +1,64 @@
+# Environment and secrets
+.env
+.env.local
+*.env
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Logs
+*.log
+logs/
+
+# Output artifacts
+output/
+reports/*.pdf
+!reports/.gitkeep
+data/raw/
+data/processed/
+!data/sample_*.csv
+
+# Apify
+apify_storage/
+
+# OS
+Thumbs.db

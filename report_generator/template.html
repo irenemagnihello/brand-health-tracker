@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Brand Health Report — {{ brand_label }}</title>
+  <style>
+    @page { size: A4; margin: 20mm; }
+    body { font-family: 'Helvetica', sans-serif; color: #1a1a1a; line-height: 1.5; }
+    h1 { color: #1a1a1a; font-size: 28px; margin-bottom: 4px; }
+    .meta { color: #666; font-size: 12px; margin-bottom: 24px; }
+    h2 { color: #d4a574; font-size: 16px; border-bottom: 1px solid #eee;
+         padding-bottom: 4px; margin-top: 24px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+    th { background: #d4a574; color: white; padding: 8px; text-align: left; }
+    td { padding: 6px 8px; border-bottom: 1px solid #eee; }
+    .crisis { background: #fadbd8; color: #c0392b; padding: 12px;
+              border-left: 4px solid #c0392b; margin: 16px 0; }
+    .mention { border-left: 3px solid #d4a574; padding-left: 12px;
+               margin-bottom: 16px; font-size: 10px; }
+    .mention-header { font-weight: bold; color: #1a1a1a; }
+    .mention-text { font-style: italic; color: #333; margin: 4px 0; }
+    .mention-topics { color: #666; font-size: 9px; }
+  </style>
+</head>
+<body>
+  <h1>Brand Health Tracker</h1>
+  <div class="meta">{{ brand_label }} &nbsp;|&nbsp; {{ date_range }} &nbsp;|&nbsp; Generated {{ generated_at }}</div>
+
+  <h2>Executive Summary</h2>
+  <p>{{ executive_summary }}</p>
+
+  <h2>Key Metrics</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Total</th><th>Avg Sentiment</th><th>Positive</th>
+        <th>Negative</th><th>Neutral</th><th>Crisis Flags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ total }}</td>
+        <td>{{ avg_sentiment }}/5</td>
+        <td>{{ positive }}</td>
+        <td>{{ negative }}</td>
+        <td>{{ neutral }}</td>
+        <td>{{ crisis_count }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% if crisis_detected %}
+  <div class="crisis">
+    <strong>⚠ CRISIS ALERT: {{ crisis_type }}</strong> (severity: {{ severity }})<br>
+    {{ evidence_summary }}<br>
+    <em>Action:</em> {{ recommended_action }}
+  </div>
+  {% endif %}
+
+  <h2>Top Topics</h2>
+  <table>
+    <thead><tr><th>Topic</th><th>Count</th><th>%</th></tr></thead>
+    <tbody>
+      {% for topic in top_topics %}
+      <tr><td>{{ topic.name }}</td><td>{{ topic.count }}</td><td>{{ topic.pct }}%</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Trending Mentions</h2>
+  {% for mention in top_mentions %}
+  <div class="mention">
+    <div class="mention-header">
+      {{ mention.source | upper }} &nbsp;|&nbsp; @{{ mention.author }} &nbsp;|&nbsp;
+      {{ mention.sentiment_label | title }} ({{ mention.sentiment_score }}/5)
+    </div>
+    <div class="mention-text">&ldquo;{{ mention.text }}&rdquo;</div>
+    <div class="mention-topics">
+      <em>Topics:</em> {{ mention.topics }}<br>
+      <em>Insight:</em> {{ mention.summary }}
+    </div>
+  </div>
+  {% endfor %}
+</body>
+</html>

@@ -1,0 +1,74 @@
+name: Brand Health Tracker Pipeline
+
+on:
+  # Run weekly on Mondays at 8am UTC
+  schedule:
+    - cron: "0 8 * * 1"
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+    inputs:
+      brands:
+        description: "Comma-separated brand keys (leave empty for all)"
+        required: false
+        default: ""
+      platforms:
+        description: "Comma-separated platforms (leave empty for all)"
+        required: false
+        default: ""
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Brand Health Tracker pipeline
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          APIFY_USER_ID: ${{ secrets.APIFY_USER_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: claude-sonnet-4-20250514
+        run: |
+          BRANDS_ARG=""
+          if [ -n "${{ github.event.inputs.brands }}" ]; then
+            BRANDS_ARG="--brands ${{ github.event.inputs.brands }}"
+          fi
+          PLATFORMS_ARG=""
+          if [ -n "${{ github.event.inputs.platforms }}" ]; then
+            PLATFORMS_ARG="--platforms ${{ github.event.inputs.platforms }}"
+          fi
+          python -m orchestrator.main $BRANDS_ARG $PLATFORMS_ARG
+
+      - name: Upload reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brand-tracker-reports-${{ github.run_number }}
+          path: |
+            output/*.pdf
+            data/raw/*.csv
+            data/enriched/*.csv
+          retention-days: 30
+
+      - name: Commit updated data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ output/
+          git commit -m "chore: weekly brand tracker run (${{ github.run_number }})" || echo "No changes to commit"
+          git push

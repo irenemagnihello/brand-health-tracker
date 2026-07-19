@@ -1,0 +1,193 @@
+# Brand Health Tracker - Configuration
+# Brands to monitor and their respective keywords/handles per platform
+
+brands:
+  augustinus_bader:
+    display_name: "Augustinus Bader"
+    category: "luxury_skincare"
+    tier: "luxury"
+    home_market: "DE"
+    keywords:
+      - "augustinus bader"
+      - "the cream"
+      - "the rich cream"
+      - "ab skincare"
+      - "professor bader"
+    hashtags:
+      instagram:
+        - "augustinusbader"
+        - "thecream"
+        - "abskincare"
+      tiktok:
+        - "augustinusbader"
+        - "augustinbaderreview"
+        - "luxuryskincare"
+    subreddits:
+      - "SkincareAddiction"
+      - "30PlusSkinCare"
+      - "EuroSkincare"
+      - "luxurybeauty"
+    news_queries:
+      - "Augustinus Bader"
+      - "Professor Bader skincare"
+    priority_topics:
+      - "efficacy"
+      - "price_value"
+      - "packaging"
+      - "science_technology"
+      - "competitor_comparison"
+    expected_monthly_volume: "low_to_medium"  # For monitoring thresholds
+
+  the_ordinary:
+    display_name: "The Ordinary"
+    category: "masstige_skincare"
+    tier: "masstige"
+    home_market: "CA"
+    keywords:
+      - "the ordinary"
+      - "deciem"
+      - "ordinary skincare"
+      - "the ordinary niacinamide"
+      - "the ordinary retinol"
+    hashtags:
+      instagram:
+        - "theordinary"
+        - "deciem"
+        - "theordinaryskincare"
+      tiktok:
+        - "theordinary"
+        - "theordinaryhack"
+        - "skincaretok"
+    subreddits:
+      - "SkincareAddiction"
+      - "30PlusSkinCare"
+      - "theordinary"
+      - "deciem"
+    news_queries:
+      - "The Ordinary skincare"
+      - "Deciem"
+      - "Estee Lauder Deciem"
+    priority_topics:
+      - "ingredients"
+      - "value_for_money"
+      - "texture"
+      - "irritation_reactions"
+      - "duplicates_dupes"
+    expected_monthly_volume: "high"
+
+  glossier:
+    display_name: "Glossier"
+    category: "d2c_beauty"
+    tier: "premium_d2c"
+    home_market: "US"
+    keywords:
+      - "glossier"
+      - "glossier balm"
+      - "boy brow"
+      - "cloud paint"
+      - "glossier you"
+    hashtags:
+      instagram:
+        - "glossier"
+        - "boybrow"
+        - "cloudpaint"
+      tiktok:
+        - "glossier"
+        - "glossierreview"
+        - "cleanbeauty"
+    subreddits:
+      - "SkincareAddiction"
+      - "MakeupAddiction"
+      - "glossier"
+      - "30PlusSkinCare"
+    news_queries:
+      - "Glossier brand"
+      - "Emily Weiss Glossier"
+    priority_topics:
+      - "brand_aesthetic"
+      - "packaging"
+      - "color_range"
+      - "customer_service"
+      - "sustainability"
+    expected_monthly_volume: "medium"
+
+# Scraping configuration
+scraping:
+  schedule:
+    instagram: "every_12_hours"
+    tiktok: "every_12_hours"
+    reddit: "every_6_hours"
+    news: "every_6_hours"
+    youtube: "every_24_hours"
+  
+  limits:
+    max_mentions_per_brand_per_run: 50
+    max_total_mentions_per_run: 200
+    historical_window_days: 14  # How far back to look on first run
+  
+  quality_filters:
+    min_text_length_chars: 20
+    max_text_length_chars: 5000
+    exclude_languages: []  # Empty = keep all
+    require_brand_mention_in_text: true
+
+# LLM analysis configuration
+analysis:
+  model: "claude-sonnet-4-20250514"
+  batch_size: 20
+  temperature: 0.1
+  max_tokens: 1024
+  
+  topics_taxonomy:
+    - "efficacy_results"
+    - "texture_consistency"
+    - "packaging_design"
+    - "scent_fragrance"
+    - "price_value"
+    - "ingredients_formulation"
+    - "irritation_reactions"
+    - "sustainability_ethics"
+    - "customer_service"
+    - "shipping_delivery"
+    - "comparison_vs_competitor"
+    - "duplicates_dupes"
+    - "routine_layering"
+    - "influencer_recommendation"
+    - "celebrity_endorsement"
+    - "new_launch"
+    - "restock_availability"
+    - "discount_promo"
+    - "subscription_model"
+    - "allergic_reaction"
+
+  crisis_signals:
+    - "product_recall"
+    - "safety_alert"
+    - "viral_negative_ingredient_claim"
+    - "labor_practice_accusation"
+    - "lawsuit_class_action"
+    - "celebrity_pullout"
+    - "regulatory_warning"
+    - "supply_chain_issue"
+    - "founders_leaving"
+    - "out_of_stock_critical"
+
+  sentiment_thresholds:
+    positive: 4  # score >= 4
+    neutral: 3    # score == 3
+    negative: 2   # score <= 2
+
+# Reporting configuration
+reporting:
+  pdf_template: "./report_generator/template.html"
+  sections:
+    - "executive_summary"
+    - "brand_comparison"
+    - "trending_topics"
+    - "top_mentions"
+    - "crisis_alerts"
+    - "next_week_focus"
+
+  looker_studio:
+    default_date_range: "last_7_days"
+    refresh_frequency: "daily"
