@@ -13,15 +13,18 @@ brands:
       - "the rich cream"
       - "ab skincare"
       - "professor bader"
+      - "tfc8"
     hashtags:
       instagram:
         - "augustinusbader"
         - "thecream"
         - "abskincare"
+        - "luxuryskincare"
       tiktok:
         - "augustinusbader"
         - "augustinbaderreview"
         - "luxuryskincare"
+        - "tfc8"
     subreddits:
       - "SkincareAddiction"
       - "30PlusSkinCare"
@@ -30,13 +33,14 @@ brands:
     news_queries:
       - "Augustinus Bader"
       - "Professor Bader skincare"
+      - "Augustinus Bader The Cream"
     priority_topics:
       - "efficacy"
       - "price_value"
       - "packaging"
       - "science_technology"
       - "competitor_comparison"
-    expected_monthly_volume: "low_to_medium"  # For monitoring thresholds
+    expected_monthly_volume: "low_to_medium"
 
   the_ordinary:
     display_name: "The Ordinary"
@@ -49,24 +53,29 @@ brands:
       - "ordinary skincare"
       - "the ordinary niacinamide"
       - "the ordinary retinol"
+      - "ordinary serum"
     hashtags:
       instagram:
         - "theordinary"
         - "deciem"
         - "theordinaryskincare"
+        - "skincareaddiction"
       tiktok:
         - "theordinary"
         - "theordinaryhack"
         - "skincaretok"
+        - "deciem"
     subreddits:
       - "SkincareAddiction"
       - "30PlusSkinCare"
       - "theordinary"
       - "deciem"
+      - "SkincareAddicts"
     news_queries:
       - "The Ordinary skincare"
       - "Deciem"
       - "Estee Lauder Deciem"
+      - "The Ordinary new product"
     priority_topics:
       - "ingredients"
       - "value_for_money"
@@ -86,23 +95,29 @@ brands:
       - "boy brow"
       - "cloud paint"
       - "glossier you"
+      - "glossier skin"
     hashtags:
       instagram:
         - "glossier"
         - "boybrow"
         - "cloudpaint"
+        - "glossieryou"
       tiktok:
         - "glossier"
         - "glossierreview"
         - "cleanbeauty"
+        - "boybrow"
     subreddits:
       - "SkincareAddiction"
       - "MakeupAddiction"
       - "glossier"
       - "30PlusSkinCare"
+      - "MakeupRehab"
     news_queries:
       - "Glossier brand"
       - "Emily Weiss Glossier"
+      - "Glossier new launch"
+      - "Glossier customer service"
     priority_topics:
       - "brand_aesthetic"
       - "packaging"
@@ -119,17 +134,17 @@ scraping:
     reddit: "every_6_hours"
     news: "every_6_hours"
     youtube: "every_24_hours"
-  
+
   limits:
-    max_mentions_per_brand_per_run: 50
-    max_total_mentions_per_run: 200
-    historical_window_days: 14  # How far back to look on first run
-  
+    max_mentions_per_brand_per_run: 60
+    max_total_mentions_per_run: 250
+    historical_window_days: 30  # last 30 days for richer dataset
+
   quality_filters:
     min_text_length_chars: 20
     max_text_length_chars: 5000
-    exclude_languages: []  # Empty = keep all
-    require_brand_mention_in_text: true
+    exclude_languages: []
+    require_brand_mention_in_text: true  # Already filtered at source via brand keywords
 
 # LLM analysis configuration
 analysis:
@@ -137,7 +152,7 @@ analysis:
   batch_size: 20
   temperature: 0.1
   max_tokens: 1024
-  
+
   topics_taxonomy:
     - "efficacy_results"
     - "texture_consistency"
@@ -173,9 +188,9 @@ analysis:
     - "out_of_stock_critical"
 
   sentiment_thresholds:
-    positive: 4  # score >= 4
-    neutral: 3    # score == 3
-    negative: 2   # score <= 2
+    positive: 4
+    neutral: 3
+    negative: 2
 
 # Reporting configuration
 reporting:
@@ -189,5 +204,5 @@ reporting:
     - "next_week_focus"
 
   looker_studio:
-    default_date_range: "last_7_days"
+    default_date_range: "last_30_days"
     refresh_frequency: "daily"

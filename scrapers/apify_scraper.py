@@ -110,25 +110,29 @@ class BrandMentionScraper:
     def _scrape_instagram(self, brand: Dict) -> List[Dict]:
         hashtags = brand["hashtags"]["instagram"]
         results = []
-        for tag in hashtags[:2]:  # Limit to top 2 hashtags to stay within free tier
+        for tag in hashtags[:3]:  # Top 3 hashtags
             posts = self._run_actor(
                 self.ACTORS["instagram_hashtag"],
-                input_data={"hashtags": [tag], "resultsLimit": 25},
+                input_data={
+                    "hashtags": [tag],
+                    "resultsLimit": 30,
+                },
             )
             for post in posts:
                 caption = post.get("caption", "") or post.get("text", "")
-                results.append({
-                    "mention_id": post.get("id", f"ig_{int(time.time()*1000)}_{len(results)}"),
-                    "timestamp": post.get("timestamp") or datetime.utcnow().isoformat(),
-                    "source": "instagram",
-                    "source_url": post.get("url", ""),
-                    "language": "en",  # Default; refined later
-                    "raw_text": caption[:5000],
-                    "author_handle": post.get("ownerUsername", ""),
-                    "engagement_likes": post.get("likesCount", 0),
-                    "engagement_comments": post.get("commentsCount", 0),
-                    "country_guess": "",
-                })
+                if caption:
+                    results.append({
+                        "mention_id": post.get("id", f"ig_{int(time.time()*1000)}_{len(results)}"),
+                        "timestamp": post.get("timestamp") or datetime.utcnow().isoformat(),
+                        "source": "instagram",
+                        "source_url": post.get("url", ""),
+                        "language": "en",
+                        "raw_text": caption[:5000],
+                        "author_handle": post.get("ownerUsername", ""),
+                        "engagement_likes": post.get("likesCount", 0),
+                        "engagement_comments": post.get("commentsCount", 0),
+                        "country_guess": "",
+                    })
         return results
 
     def _scrape_tiktok(self, brand: Dict) -> List[Dict]:
@@ -157,15 +161,17 @@ class BrandMentionScraper:
 
     def _scrape_reddit(self, brand: Dict) -> List[Dict]:
         results = []
-        for subreddit in brand["subreddits"][:3]:
+        # Use the first 3 keywords to build search query
+        query = " OR ".join(brand["keywords"][:3])
+        # Search across all of Reddit (most coverage for brands)
+        for keyword in brand["keywords"][:2]:
             posts = self._run_actor(
                 self.ACTORS["reddit_search"],
                 input_data={
-                    "subreddit": subreddit,
-                    "search": " OR ".join(brand["keywords"][:3]),
+                    "query": keyword,
                     "sort": "new",
-                    "time": "week",
-                    "limit": 20,
+                    "time": "month",
+                    "limit": 25,
                 },
             )
             for p in posts:
@@ -185,12 +191,25 @@ class BrandMentionScraper:
 
     def _scrape_news(self, brand: Dict) -> List[Dict]:
         results = []
-        for query in brand["news_queries"][:2]:
+        # Query each brand name + main keyword (more results than just brand name)
+        for query in brand["news_queries"][:1] + brand["keywords"][:1]:
             articles = self._run_actor(
                 self.ACTORS["google_news"],
-                input_data={"query": query, "language": "en", "max_results": 15},
+                input_data={
+                    "query": query,
+                    "language": "en",
+                    "maxResults": 15,
+                    "time": "past_month",
+                },
             )
             for a in articles:
+                # Handle both "source" as string and as object
+                source_field = a.get("source", "")
+                if isinstance(source_field, dict):
+                    source_name = source_field.get("name", "")
+                else:
+                    source_name = str(source_field)
+
                 results.append({
                     "mention_id": a.get("url", f"nw_{int(time.time()*1000)}_{len(results)}"),
                     "timestamp": a.get("date") or datetime.utcnow().isoformat(),
@@ -198,7 +217,7 @@ class BrandMentionScraper:
                     "source_url": a.get("url", ""),
                     "language": "en",
                     "raw_text": f"{a.get('title','')} - {a.get('snippet', a.get('description', ''))}"[:5000],
-                    "author_handle": a.get("source", "").get("name", "") if isinstance(a.get("source"), dict) else str(a.get("source", "")),
+                    "author_handle": source_name,
                     "engagement_likes": 0,
                     "engagement_comments": 0,
                     "country_guess": "",
@@ -262,6 +281,9 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
+
+
 
 
 
