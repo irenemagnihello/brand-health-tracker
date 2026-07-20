@@ -61,7 +61,7 @@ jobs:
             # Conservative defaults for fast, successful runs
           # Override via workflow_dispatch inputs to scale up
           python scripts/live_pipeline.py \
-            --brands the_ordinary \
+            --brands glossier \
             --platforms reddit
 
       - name: Upload run artifacts
@@ -73,6 +73,7 @@ jobs:
             output/*.csv
             output/*.pdf
           retention-days: 7
+
 
 
 
