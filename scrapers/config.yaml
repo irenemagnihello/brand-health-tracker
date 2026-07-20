@@ -145,6 +145,17 @@ scraping:
     max_text_length_chars: 5000
     exclude_languages: []
     require_brand_mention_in_text: true  # Already filtered at source via brand keywords
+    # Exclude noise phrases that match keyword "the ordinary" but aren't about the brand
+    exclude_noise_phrases:
+      - "out of the ordinary"
+      - "out-of-the-ordinary"
+      - "nothing out of the ordinary"
+      - "hair serum fake"
+      - "verify if.*fake"
+      - "ordinary person"
+      - "ordinary day"
+      - "ordinary life"
+      - "ordinary house"
 
 # LLM analysis configuration
 analysis:
@@ -206,3 +217,4 @@ reporting:
   looker_studio:
     default_date_range: "last_30_days"
     refresh_frequency: "daily"
+

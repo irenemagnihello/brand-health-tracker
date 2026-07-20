@@ -267,6 +267,13 @@ class BrandMentionScraper:
             mask = df["raw_text"].fillna("").str.lower().str.contains(pattern, regex=True)
             df = df[mask]
 
+        # Exclude noise phrases (matches that contain brand keyword but aren't about the brand)
+        noise_phrases = qf.get("exclude_noise_phrases", [])
+        if noise_phrases:
+            noise_pattern = "|".join(noise_phrases)
+            noise_mask = df["raw_text"].fillna("").str.lower().str.contains(noise_pattern, regex=True)
+            df = df[~noise_mask]
+
         after = len(df)
         if before != after:
             print(f"  Filtered {before - after} low-quality mentions (kept {after}).")
@@ -281,6 +288,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
