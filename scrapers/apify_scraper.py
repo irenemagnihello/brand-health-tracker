@@ -76,6 +76,10 @@ class BrandMentionScraper:
                     mentions = self._scrape_news(brand)
                 elif platform == "youtube":
                     mentions = self._scrape_youtube(brand)
+                elif platform == "facebook":
+                    mentions = self._scrape_facebook(brand)
+                elif platform == "blog":
+                    mentions = self._scrape_blogs(brand)
                 else:
                     print(f"  Unknown platform: {platform}, skipping.")
                     continue
@@ -406,6 +410,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
