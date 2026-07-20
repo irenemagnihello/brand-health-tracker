@@ -51,7 +51,7 @@ class BrandMentionAnalyzer:
         if not api_key:
             raise ValueError("ANTHROPIC_API_KEY missing. Add it to your .env file.")
         self.client = anthropic.Anthropic(api_key=api_key)
-        self.model = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-20250514")
+        self.model = os.getenv("CLAUDE_MODEL", "claude-3-5-sonnet-20241022")
 
         with open(config_path) as f:
             self.config = yaml.safe_load(f)
@@ -285,3 +285,4 @@ if __name__ == "__main__":
     raw = raw[raw["brand_key"] == "augustinus_bader"].head(5)
     enriched = analyzer.enrich_dataframe(raw, "augustinus_bader")
     print(enriched[["raw_text", "sentiment_score", "topic_tags", "crisis_flag"]].head())
+

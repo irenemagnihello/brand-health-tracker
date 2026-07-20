@@ -39,7 +39,7 @@ jobs:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           APIFY_USER_ID: ${{ secrets.APIFY_USER_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          CLAUDE_MODEL: claude-sonnet-4-20250514
+          CLAUDE_MODEL: claude-3-5-sonnet-20241022
         run: |
           BRANDS_ARG=""
           if [ -n "${{ github.event.inputs.brands }}" ]; then
@@ -70,3 +70,4 @@ jobs:
           git add data/ output/
           git commit -m "chore: weekly brand tracker run (${{ github.run_number }})" || echo "No changes to commit"
           git push
+
