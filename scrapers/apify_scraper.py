@@ -30,13 +30,13 @@ load_dotenv()
 class BrandMentionScraper:
     """Orchestrates Apify scrapers across multiple platforms for a given brand."""
 
-    # Apify actor IDs (public store actors that work out of the box)
+    # Apify actor IDs (verified working on 19 July 2026)
     ACTORS = {
-        "instagram_hashtag": "reGe1BGzwKD2FkA4T",   # Instagram Hashtag Scraper (apify/instagram-hashtag-scraper)
-        "tiktok_hashtag":    "F3Fg8a9qlRDdN3Ccq",   # TikTok Hashtag Scraper
-        "reddit_search":     "4skQgF9R0SUvcXLwj",   # Reddit Search Scraper
-        "google_news":       "DxV8LdR2H4Jq2H9Ww",   # Google News Scraper
-        "youtube_comments":  "NUX6Yv0eFKsvjv4FY",   # YouTube Comments Scraper
+        "instagram_hashtag": "reGe1ST3OBgYZSsZJ",   # apify/instagram-hashtag-scraper
+        "tiktok_hashtag":    "f1ZeP0K58iwlqG2pY",   # tiktok-hashtag-scraper
+        "reddit_search":     "5LOwKe4dIDEJ64I58",   # reddit-search-scraper
+        "google_news":       "6vAxbA15R5J4uLKZ0",   # google-news-scraper
+        "youtube_comments":  "YBz4Igsb4OdAuOGev",   # youtube-comments-scraper (placeholder)
     }
 
     APIFY_BASE = "https://api.apify.com/v2"
@@ -225,7 +225,8 @@ class BrandMentionScraper:
             print(f"  Apify actor {actor_id} timed out after {timeout_s}s.")
             return []
         except requests.exceptions.HTTPError as e:
-            print(f"  Apify actor {actor_id} HTTP error: {e.response.status_code} - {e.response.text[:200]}")
+            err_body = e.response.text[:300] if e.response.text else ""
+            print(f"  Apify actor {actor_id} HTTP error: {e.response.status_code} - {err_body}")
             return []
 
     # ------------------------------------------------------------------
@@ -261,3 +262,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
+
+
+
