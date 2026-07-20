@@ -36,6 +36,24 @@ jobs:
           pip install -r requirements.txt
           pip install gspread google-auth
 
+      - name: Validate SA and Sheet ID
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          echo "=== Writing SA JSON ==="
+          printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON" > /tmp/gcp-sa.json
+          echo "File size: $(wc -c < /tmp/gcp-sa.json) bytes"
+          echo ""
+          echo "=== Validate JSON parses ==="
+          python3 -c "
+          import json
+          with open('/tmp/gcp-sa.json') as f:
+              sa = json.load(f)
+          print('JSON parses OK')
+          print('Project:', sa.get('project_id'))
+          print('Client email:', sa.get('client_email'))
+          "
+
       - name: Run live pipeline (scrape + AI analyze + write to Google Sheets)
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
@@ -44,61 +62,7 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           GOOGLE_SHEETS_ID: 1-_RLwe2W3GmIxD8X5ZfI0pmOfuc9W0nkX6gND26DPQQ
         run: |
-          # DEBUG: Write SA JSON to file and validate
-          echo "=== Writing SA JSON ==="
-          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > /tmp/gcp-sa.json
-          echo "File size: $(wc -c < /tmp/gcp-sa.json) bytes"
-          echo "First 100 chars: $(head -c 100 /tmp/gcp-sa.json)"
-          echo ""
-          echo "=== Validate JSON parses ==="
-          python3 -c "
-import json, sys
-try:
-    with open('/tmp/gcp-sa.json') as f:
-        sa = json.load(f)
-    print('JSON parses OK')
-    print('Project:', sa.get('project_id'))
-    print('Client email:', sa.get('client_email'))
-    print('Type:', sa.get('type'))
-except Exception as e:
-    print(f'JSON PARSE ERROR: {e}')
-    sys.exit(1)
-"
-          echo ""
-          echo "=== Test gspread auth ==="
-          python3 -c "
-import json, gspread
-from google.oauth2.service_account import Credentials
-
-with open('/tmp/gcp-sa.json') as f:
-    sa = json.load(f)
-
-scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-creds = Credentials.from_service_account_file('/tmp/gcp-sa.json', scopes=scopes)
-client = gspread.authorize(creds)
-
-sheet_id = '1-_RLwe2W3GmIxD8X5ZfI0pmOfuc9W0nkX6gND26DPQQ'
-try:
-    sheet = client.open_by_key(sheet_id)
-    print(f'SUCCESS: {sheet.title}')
-except Exception as e:
-    print(f'ERROR: {type(e).__name__}: {e}')
-"
-          echo ""
-          echo "=== Run live pipeline ==="
-
-          # Run the live pipeline
-          BRANDS_ARG=""
-          if [ -n "${{ github.event.inputs.brands }}" ]; then
-            BRANDS_ARG="--brands ${{ github.event.inputs.brands }}"
-          fi
-          PLATFORMS_ARG=""
-          if [ -n "${{ github.event.inputs.platforms }}" ]; then
-            PLATFORMS_ARG="--platforms ${{ github.event.inputs.platforms }}"
-          fi
-
-          GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-sa.json \
-            # Conservative defaults for fast, successful runs
+          # Conservative defaults for fast, successful runs
           # Override via workflow_dispatch inputs to scale up
           python scripts/live_pipeline.py \
             --brands glossier \
@@ -108,15 +72,18 @@ except Exception as e:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-run-${{ github.run_number }}
+          name: brand-tracker-reports-${{ github.run_number }}
           path: |
-            output/*.csv
             output/*.pdf
+            data/raw/*.csv
+            data/enriched/*.csv
           retention-days: 7
 
-
-
-
-
-
-
+      - name: Commit updated data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ output/
+          git commit -m "chore: weekly brand tracker run (${{ github.run_number }})" || echo "No changes to commit"
+          git push
