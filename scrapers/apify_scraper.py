@@ -36,7 +36,10 @@ class BrandMentionScraper:
         "tiktok_hashtag":    "f1ZeP0K58iwlqG2pY",   # tiktok-hashtag-scraper
         "reddit_search":     "5LOwKe4dIDEJ64I58",   # reddit-search-scraper
         "google_news":       "6vAxbA15R5J4uLKZ0",   # google-news-scraper
-        "youtube_comments":  "YBz4Igsb4OdAuOGev",   # youtube-comments-scraper (placeholder)
+        "youtube_comments":  "p7UMdpQnjKmmpR21D",   # youtube-comments-scraper
+        "facebook_pages":    "W45u4o0fA1lhlWnZF",   # facebook-page-posts-scraper
+        "google_search":     "nFJndFXA5zjCTuudP",   # google-search-scraper
+        "tumblr_search":     "D1p9GOGe2nRlViand",   # tumblr-search-scraper
     }
 
     APIFY_BASE = "https://api.apify.com/v2"
@@ -138,13 +141,18 @@ class BrandMentionScraper:
     def _scrape_tiktok(self, brand: Dict) -> List[Dict]:
         hashtags = brand["hashtags"]["tiktok"]
         results = []
-        for tag in hashtags[:2]:
+        for tag in hashtags[:3]:
             videos = self._run_actor(
                 self.ACTORS["tiktok_hashtag"],
-                input_data={"hashtags": [tag], "resultsPerPage": 25},
+                input_data={
+                    "hashtags": [tag],
+                    "resultsPerPage": 25,
+                },
             )
             for v in videos:
                 text = v.get("text", "") or v.get("desc", "")
+                if not text:
+                    continue
                 results.append({
                     "mention_id": v.get("id", f"tt_{int(time.time()*1000)}_{len(results)}"),
                     "timestamp": v.get("createTime") or datetime.utcnow().isoformat(),
@@ -157,6 +165,116 @@ class BrandMentionScraper:
                     "engagement_comments": v.get("commentCount", 0),
                     "country_guess": "",
                 })
+        return results
+
+    def _scrape_youtube(self, brand: Dict) -> List[Dict]:
+        """Scrape YouTube comments via video search."""
+        results = []
+        query = f"{brand['display_name']} review OR tutorial"
+        try:
+            # First, get top videos matching the query
+            videos = self._run_actor(
+                self.ACTORS["google_search"],
+                input_data={
+                    "query": f"site:youtube.com {query}",
+                    "maxResults": 5,
+                    "languageCode": "en",
+                },
+            )
+            for v in videos[:3]:  # Top 3 videos
+                video_url = v.get("url", "")
+                if "watch?v=" not in video_url:
+                    continue
+                # Get comments for this video
+                comments = self._run_actor(
+                    self.ACTORS["youtube_comments"],
+                    input_data={
+                        "videoUrl": video_url,
+                        "maxComments": 15,
+                    },
+                )
+                for c in comments:
+                    text = c.get("text", "")
+                    if text and len(text) > 30:
+                        results.append({
+                            "mention_id": c.get("id", f"yt_{int(time.time()*1000)}_{len(results)}"),
+                            "timestamp": c.get("publishedAt") or datetime.utcnow().isoformat(),
+                            "source": "youtube",
+                            "source_url": c.get("authorChannelUrl", video_url),
+                            "language": "en",
+                            "raw_text": text[:5000],
+                            "author_handle": c.get("authorDisplayName", ""),
+                            "engagement_likes": c.get("likeCount", 0),
+                            "engagement_comments": 0,
+                            "country_guess": "",
+                        })
+        except Exception as e:
+            print(f"  YouTube scraping error: {e}")
+        return results
+
+    def _scrape_facebook(self, brand: Dict) -> List[Dict]:
+        """Scrape Facebook public posts mentioning the brand."""
+        results = []
+        query = brand["display_name"]
+        try:
+            posts = self._run_actor(
+                self.ACTORS["facebook_pages"],
+                input_data={
+                    "query": query,
+                    "max_posts": 15,
+                    "language": "en",
+                },
+            )
+            for p in posts:
+                text = p.get("text", "") or p.get("message", "")
+                if text and len(text) > 30:
+                    results.append({
+                        "mention_id": p.get("id", f"fb_{int(time.time()*1000)}_{len(results)}"),
+                        "timestamp": p.get("time") or datetime.utcnow().isoformat(),
+                        "source": "facebook",
+                        "source_url": p.get("url", ""),
+                        "language": "en",
+                        "raw_text": text[:5000],
+                        "author_handle": p.get("pageName", ""),
+                        "engagement_likes": p.get("likes", 0),
+                        "engagement_comments": p.get("comments", 0),
+                        "country_guess": "",
+                    })
+        except Exception as e:
+            print(f"  Facebook scraping error: {e}")
+        return results
+
+    def _scrape_blogs(self, brand: Dict) -> List[Dict]:
+        """Scrape blogs via Google search + Tumblr."""
+        results = []
+        try:
+            # Google search for blog posts about the brand
+            blog_results = self._run_actor(
+                self.ACTORS["google_search"],
+                input_data={
+                    "query": f"{brand['display_name']} skincare review blog",
+                    "maxResults": 10,
+                    "languageCode": "en",
+                },
+            )
+            for r in blog_results:
+                title = r.get("title", "")
+                snippet = r.get("description", "")
+                if title and ("review" in title.lower() or "blog" in r.get("url", "").lower() or "review" in snippet.lower()):
+                    results.append({
+                        "mention_id": r.get("url", f"bl_{int(time.time()*1000)}_{len(results)}"),
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "source": "blog",
+                        "source_url": r.get("url", ""),
+                        "language": "en",
+                        "raw_text": f"{title} - {snippet}"[:5000],
+                        "author_handle": r.get("displayedUrl", ""),
+                        "engagement_likes": 0,
+                        "engagement_comments": 0,
+                        "country_guess": "",
+                    })
+        except Exception as e:
+            print(f"  Blog scraping error: {e}")
         return results
 
     def _scrape_reddit(self, brand: Dict) -> List[Dict]:
@@ -288,6 +406,9 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
+
+
 
 
 
