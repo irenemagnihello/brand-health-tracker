@@ -219,14 +219,12 @@ class BrandMentionScraper:
     def _scrape_facebook(self, brand: Dict) -> List[Dict]:
         """Scrape Facebook public posts mentioning the brand."""
         results = []
-        query = brand["display_name"]
         try:
             posts = self._run_actor(
                 self.ACTORS["facebook_pages"],
                 input_data={
-                    "query": query,
+                    "startUrls": [{"url": f"https://www.facebook.com/search/posts/?q={brand['display_name'].replace(' ', '%20')}", "method": "GET"}],
                     "max_posts": 15,
-                    "language": "en",
                 },
             )
             for p in posts:
@@ -249,14 +247,14 @@ class BrandMentionScraper:
         return results
 
     def _scrape_blogs(self, brand: Dict) -> List[Dict]:
-        """Scrape blogs via Google search + Tumblr."""
+        """Scrape blogs via Google search."""
         results = []
         try:
             # Google search for blog posts about the brand
             blog_results = self._run_actor(
                 self.ACTORS["google_search"],
                 input_data={
-                    "query": f"{brand['display_name']} skincare review blog",
+                    "queries": [f"{brand['display_name']} skincare review blog"],
                     "maxResults": 10,
                     "languageCode": "en",
                 },
@@ -410,6 +408,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
