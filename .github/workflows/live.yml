@@ -39,7 +39,6 @@ jobs:
       - name: Run live pipeline (scrape + AI analyze + write to Google Sheets)
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
-          APIFY_USER_ID: ${{ secrets.APIFY_USER_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_MODEL: claude-sonnet-4-20250514
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
@@ -70,3 +69,4 @@ jobs:
             output/*.csv
             output/*.pdf
           retention-days: 7
+
