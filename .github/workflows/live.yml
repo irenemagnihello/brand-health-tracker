@@ -64,7 +64,8 @@ jobs:
         run: |
           # Conservative defaults for fast, successful runs
           # Override via workflow_dispatch inputs to scale up
-          python scripts/live_pipeline.py \
+          # Uses local_pipeline.py - outputs CSV + PDF (no Google Sheets auth issues)
+          python scripts/local_pipeline.py \
             --brands glossier \
             --platforms reddit
 
@@ -78,4 +79,5 @@ jobs:
             data/raw/*.csv
             data/enriched/*.csv
           retention-days: 7
+
 
