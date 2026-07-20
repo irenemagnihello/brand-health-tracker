@@ -219,27 +219,29 @@ class BrandMentionScraper:
     def _scrape_facebook(self, brand: Dict) -> List[Dict]:
         """Scrape Facebook public posts mentioning the brand."""
         results = []
+        query = brand["display_name"].replace(" ", "%20")
         try:
             posts = self._run_actor(
                 self.ACTORS["facebook_pages"],
                 input_data={
-                    "startUrls": [{"url": f"https://www.facebook.com/search/posts/?q={brand['display_name'].replace(' ', '%20')}", "method": "GET"}],
+                    "query": brand["display_name"],
                     "max_posts": 15,
+                    "language": "en",
                 },
             )
             for p in posts:
-                text = p.get("text", "") or p.get("message", "")
+                text = p.get("text", "") or p.get("message", "") or p.get("description", "")
                 if text and len(text) > 30:
                     results.append({
                         "mention_id": p.get("id", f"fb_{int(time.time()*1000)}_{len(results)}"),
-                        "timestamp": p.get("time") or datetime.utcnow().isoformat(),
+                        "timestamp": p.get("time") or p.get("postDate") or datetime.utcnow().isoformat(),
                         "source": "facebook",
-                        "source_url": p.get("url", ""),
+                        "source_url": p.get("url", "") or p.get("postUrl", ""),
                         "language": "en",
                         "raw_text": text[:5000],
-                        "author_handle": p.get("pageName", ""),
-                        "engagement_likes": p.get("likes", 0),
-                        "engagement_comments": p.get("comments", 0),
+                        "author_handle": p.get("pageName", "") or p.get("author", ""),
+                        "engagement_likes": p.get("likes", 0) or p.get("likeCount", 0),
+                        "engagement_comments": p.get("comments", 0) or p.get("commentCount", 0),
                         "country_guess": "",
                     })
         except Exception as e:
@@ -250,11 +252,10 @@ class BrandMentionScraper:
         """Scrape blogs via Google search."""
         results = []
         try:
-            # Google search for blog posts about the brand
             blog_results = self._run_actor(
                 self.ACTORS["google_search"],
                 input_data={
-                    "queries": [f"{brand['display_name']} skincare review blog"],
+                    "queries": f"{brand['display_name']} skincare review blog",
                     "maxResults": 10,
                     "languageCode": "en",
                 },
@@ -408,6 +409,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
