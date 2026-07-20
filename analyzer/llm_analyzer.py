@@ -51,7 +51,7 @@ class BrandMentionAnalyzer:
         if not api_key:
             raise ValueError("ANTHROPIC_API_KEY missing. Add it to your .env file.")
         self.client = anthropic.Anthropic(api_key=api_key)
-        self.model = os.getenv("CLAUDE_MODEL", "claude-3-5-sonnet-20241022")
+        self.model = os.getenv("CLAUDE_MODEL", "claude-3-5-sonnet-latest")
 
         with open(config_path) as f:
             self.config = yaml.safe_load(f)
