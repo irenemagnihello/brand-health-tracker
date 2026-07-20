@@ -40,12 +40,52 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          CLAUDE_MODEL: claude-haiku-4-5
+          CLAUDE_MODEL: claude-3-5-sonnet-latest
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           GOOGLE_SHEETS_ID: 1-_RLwe2W3GmIxD8X5ZfI0pmOfuc9W0nkX6gND26DPQQ
         run: |
-          # Write Google Service Account JSON to file
+          # DEBUG: Write SA JSON to file and validate
+          echo "=== Writing SA JSON ==="
           echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > /tmp/gcp-sa.json
+          echo "File size: $(wc -c < /tmp/gcp-sa.json) bytes"
+          echo "First 100 chars: $(head -c 100 /tmp/gcp-sa.json)"
+          echo ""
+          echo "=== Validate JSON parses ==="
+          python3 -c "
+import json, sys
+try:
+    with open('/tmp/gcp-sa.json') as f:
+        sa = json.load(f)
+    print('JSON parses OK')
+    print('Project:', sa.get('project_id'))
+    print('Client email:', sa.get('client_email'))
+    print('Type:', sa.get('type'))
+except Exception as e:
+    print(f'JSON PARSE ERROR: {e}')
+    sys.exit(1)
+"
+          echo ""
+          echo "=== Test gspread auth ==="
+          python3 -c "
+import json, gspread
+from google.oauth2.service_account import Credentials
+
+with open('/tmp/gcp-sa.json') as f:
+    sa = json.load(f)
+
+scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+creds = Credentials.from_service_account_file('/tmp/gcp-sa.json', scopes=scopes)
+client = gspread.authorize(creds)
+
+sheet_id = '1-_RLwe2W3GmIxD8X5ZfI0pmOfuc9W0nkX6gND26DPQQ'
+try:
+    sheet = client.open_by_key(sheet_id)
+    print(f'SUCCESS: {sheet.title}')
+except Exception as e:
+    print(f'ERROR: {type(e).__name__}: {e}')
+"
+          echo ""
+          echo "=== Run live pipeline ==="
 
           # Run the live pipeline
           BRANDS_ARG=""
@@ -73,6 +113,7 @@ jobs:
             output/*.csv
             output/*.pdf
           retention-days: 7
+
 
 
 
