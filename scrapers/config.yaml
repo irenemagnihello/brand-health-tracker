@@ -136,9 +136,9 @@ scraping:
     youtube: "every_24_hours"
 
   limits:
-    max_mentions_per_brand_per_run: 60
-    max_total_mentions_per_run: 250
-    historical_window_days: 30  # last 30 days for richer dataset
+    max_mentions_per_brand_per_run: 25
+    max_total_mentions_per_run: 50
+    historical_window_days: 7  # Last 7 days for fast runs
 
   quality_filters:
     min_text_length_chars: 20
@@ -217,4 +217,5 @@ reporting:
   looker_studio:
     default_date_range: "last_30_days"
     refresh_frequency: "daily"
+
 

@@ -58,7 +58,11 @@ jobs:
           fi
 
           GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-sa.json \
-            python scripts/live_pipeline.py $BRANDS_ARG $PLATFORMS_ARG
+            # Conservative defaults for fast, successful runs
+          # Override via workflow_dispatch inputs to scale up
+          python scripts/live_pipeline.py \
+            --brands the_ordinary \
+            --platforms reddit
 
       - name: Upload run artifacts
         if: always()
@@ -69,5 +73,6 @@ jobs:
             output/*.csv
             output/*.pdf
           retention-days: 7
+
 
 

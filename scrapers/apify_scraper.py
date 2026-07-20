@@ -59,7 +59,8 @@ class BrandMentionScraper:
     def run_for_brand(self, brand_key: str, platforms: Optional[List[str]] = None) -> pd.DataFrame:
         """Scrape mentions for a single brand across selected platforms."""
         brand = self.config["brands"][brand_key]
-        platforms = platforms or ["instagram", "tiktok", "reddit", "news"]
+        # Default to fast single platform (reddit) for quick runs
+        platforms = platforms or ["reddit"]
 
         all_mentions: List[Dict] = []
 
@@ -285,14 +286,14 @@ class BrandMentionScraper:
         # Use the first 3 keywords to build search query
         query = " OR ".join(brand["keywords"][:3])
         # Search across all of Reddit (most coverage for brands)
-        for keyword in brand["keywords"][:2]:
+        for keyword in brand["keywords"][:1]:  # Just 1 keyword for speed
             posts = self._run_actor(
                 self.ACTORS["reddit_search"],
                 input_data={
                     "query": keyword,
                     "sort": "new",
-                    "time": "month",
-                    "limit": 25,
+                    "time": "week",
+                    "limit": 25,  # Reduced from 25 to keep it fast
                 },
             )
             for p in posts:
@@ -409,6 +410,8 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
+
 
 
 
