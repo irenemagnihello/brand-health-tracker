@@ -384,26 +384,27 @@ class BrandMentionScraper:
         df = df[df["raw_text"].fillna("").str.len() <= qf.get("max_text_length_chars", 5000)]
 
         # Require brand mention if configured
-        # Brand-specific keyword matching: enforce word boundaries and capitalization
-        # for brands that include articles ("The Ordinary", "The Body Shop", etc.)
+        # Brand-specific keyword matching: include variants of brand name
         if qf.get("require_brand_mention_in_text", True):
             brand_name = brand.get("display_name", "").lower()
             keywords = [k.lower() for k in brand["keywords"]]
 
-            # Build a list of patterns to match
+            # Build patterns: match brand name + variants (with/without article, hashtag)
             patterns = []
 
-            # For brands with articles (e.g. "The Ordinary"), require the article
-            if brand_name.startswith("the "):
-                # Require "the" + "ordinary" as adjacent words
-                patterns.append(r"\bthe\s+ordinary\b")
-                patterns.append(r"\btheordinary\b")  # hashtag variant
-            else:
-                # Standard: any keyword as substring
-                for kw in keywords:
-                    patterns.append(re.escape(kw))
+            # Add all keywords as base patterns
+            for kw in keywords:
+                # Escape special chars and allow flexible whitespace
+                pattern = r"\b" + re.escape(kw).replace(r"\ ", r"\s+") + r"\b"
+                patterns.append(pattern)
 
-            # Combine with OR
+            # If brand starts with "The", also match the noun alone + article variations
+            if brand_name.startswith("the "):
+                noun = brand_name[4:]  # e.g. "ordinary" from "the ordinary"
+                patterns.append(r"\bthe\s+" + re.escape(noun) + r"\b")  # "the ordinary"
+                patterns.append(r"\b" + re.escape(noun) + r"\b")  # just "ordinary" (loose)
+                patterns.append(r"\bthe" + re.escape(noun) + r"\b")  # "theordinary" hashtag
+
             combined_pattern = "|".join(patterns)
             mask = df["raw_text"].fillna("").str.lower().str.contains(
                 combined_pattern, regex=True, na=False
@@ -431,6 +432,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
