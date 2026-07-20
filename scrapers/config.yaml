@@ -150,12 +150,14 @@ scraping:
       - "out of the ordinary"
       - "out-of-the-ordinary"
       - "nothing out of the ordinary"
-      - "hair serum fake"
-      - "verify if.*fake"
       - "ordinary person"
       - "ordinary day"
       - "ordinary life"
       - "ordinary house"
+      - "out-of-the-box"
+      - "ordinary people"
+      - "no ordinary"
+      - "extraordinary"
 
 # LLM analysis configuration
 analysis:
@@ -217,5 +219,6 @@ reporting:
   looker_studio:
     default_date_range: "last_30_days"
     refresh_frequency: "daily"
+
 
 

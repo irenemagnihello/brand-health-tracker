@@ -382,11 +382,12 @@ class BrandMentionScraper:
         df = df[df["raw_text"].fillna("").str.len() >= qf.get("min_text_length_chars", 20)]
         df = df[df["raw_text"].fillna("").str.len() <= qf.get("max_text_length_chars", 5000)]
 
-        # Require brand mention if configured
+        # Require brand mention if configured (loose match: at least one keyword in text)
         if qf.get("require_brand_mention_in_text", True):
-            keywords = [k.lower() for k in brand["keywords"]]
-            pattern = "|".join(keywords)
-            mask = df["raw_text"].fillna("").str.lower().str.contains(pattern, regex=True)
+            # Sort keywords by length descending (longer = more specific match first)
+            keywords = sorted([k.lower() for k in brand["keywords"]], key=len, reverse=True)
+            pattern = "|".join([k.replace(" ", r"\s+") for k in keywords])
+            mask = df["raw_text"].fillna("").str.lower().str.contains(pattern, regex=True, na=False)
             df = df[mask]
 
         # Exclude noise phrases (matches that contain brand keyword but aren't about the brand)
@@ -410,6 +411,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
