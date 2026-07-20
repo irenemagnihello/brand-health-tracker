@@ -1,0 +1,72 @@
+name: Brand Health Tracker - LIVE
+
+on:
+  workflow_dispatch:
+    inputs:
+      brands:
+        description: "Comma-separated brand keys (leave empty for all)"
+        required: false
+        default: ""
+      platforms:
+        description: "Comma-separated platforms (leave empty for all)"
+        required: false
+        default: ""
+  schedule:
+    # Every Monday at 8am UTC
+    - cron: "0 8 * * 1"
+
+jobs:
+  live-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install gspread google-auth
+
+      - name: Run live pipeline (scrape + AI analyze + write to Google Sheets)
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          APIFY_USER_ID: ${{ secrets.APIFY_USER_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: claude-sonnet-4-20250514
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SHEETS_ID: _RLwe2W3GmIxD8X5ZfI0pmOfuc9W0nkX6gND26DPQQ
+        run: |
+          # Write Google Service Account JSON to file
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > /tmp/gcp-sa.json
+
+          # Run the live pipeline
+          BRANDS_ARG=""
+          if [ -n "${{ github.event.inputs.brands }}" ]; then
+            BRANDS_ARG="--brands ${{ github.event.inputs.brands }}"
+          fi
+          PLATFORMS_ARG=""
+          if [ -n "${{ github.event.inputs.platforms }}" ]; then
+            PLATFORMS_ARG="--platforms ${{ github.event.inputs.platforms }}"
+          fi
+
+          GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-sa.json \
+            python scripts/live_pipeline.py $BRANDS_ARG $PLATFORMS_ARG
+
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-run-${{ github.run_number }}
+          path: |
+            output/*.csv
+            output/*.pdf
+          retention-days: 7
