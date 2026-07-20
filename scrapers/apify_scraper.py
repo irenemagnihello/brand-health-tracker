@@ -13,6 +13,7 @@ Usage:
 """
 
 import json
+import re
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -382,12 +383,31 @@ class BrandMentionScraper:
         df = df[df["raw_text"].fillna("").str.len() >= qf.get("min_text_length_chars", 20)]
         df = df[df["raw_text"].fillna("").str.len() <= qf.get("max_text_length_chars", 5000)]
 
-        # Require brand mention if configured (loose match: at least one keyword in text)
+        # Require brand mention if configured
+        # Brand-specific keyword matching: enforce word boundaries and capitalization
+        # for brands that include articles ("The Ordinary", "The Body Shop", etc.)
         if qf.get("require_brand_mention_in_text", True):
-            # Sort keywords by length descending (longer = more specific match first)
-            keywords = sorted([k.lower() for k in brand["keywords"]], key=len, reverse=True)
-            pattern = "|".join([k.replace(" ", r"\s+") for k in keywords])
-            mask = df["raw_text"].fillna("").str.lower().str.contains(pattern, regex=True, na=False)
+            brand_name = brand.get("display_name", "").lower()
+            keywords = [k.lower() for k in brand["keywords"]]
+
+            # Build a list of patterns to match
+            patterns = []
+
+            # For brands with articles (e.g. "The Ordinary"), require the article
+            if brand_name.startswith("the "):
+                # Require "the" + "ordinary" as adjacent words
+                patterns.append(r"\bthe\s+ordinary\b")
+                patterns.append(r"\btheordinary\b")  # hashtag variant
+            else:
+                # Standard: any keyword as substring
+                for kw in keywords:
+                    patterns.append(re.escape(kw))
+
+            # Combine with OR
+            combined_pattern = "|".join(patterns)
+            mask = df["raw_text"].fillna("").str.lower().str.contains(
+                combined_pattern, regex=True, na=False
+            )
             df = df[mask]
 
         # Exclude noise phrases (matches that contain brand keyword but aren't about the brand)
@@ -411,6 +431,7 @@ if __name__ == "__main__":
     print(f"Total: {len(df)}")
     if not df.empty:
         scraper.save_raw(df, "./data/test_mentions.csv")
+
 
 
 
