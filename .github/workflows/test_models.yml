@@ -1,0 +1,36 @@
+name: Test Available Claude Models
+
+on:
+  workflow_dispatch:
+
+jobs:
+  list-models:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Test multiple model names
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "=== Testing model names with your API key ==="
+          for model in claude-3-haiku-20240307 claude-3-5-haiku-20241022 claude-haiku-4-5 claude-sonnet-4-5 claude-3-5-sonnet claude-3-5-sonnet-latest claude-3-5-sonnet-20241022 claude-3-5-sonnet-20240620 claude-3-opus-20240229 claude-3-sonnet-20240229 claude-sonnet-4-20250514; do
+            result=$(curl -s -H "x-api-key: $ANTHROPIC_API_KEY" \
+              -H "anthropic-version: 2023-06-01" \
+              -H "Content-Type: application/json" \
+              -d "{\"model\":\"$model\",\"max_tokens\":5,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}" \
+              https://api.anthropic.com/v1/messages 2>&1)
+            if echo "$result" | grep -q '"content"'; then
+              echo "✓ WORKS: $model"
+            elif echo "$result" | grep -q "not_found_error"; then
+              echo "✗ NOT FOUND: $model"
+            elif echo "$result" | grep -q "authentication_error"; then
+              echo "✗ INVALID KEY"
+              echo "$result" | head -3
+              break
+            elif echo "$result" | grep -q "permission_error"; then
+              echo "⚠ NO PERMISSION: $model (key doesn't have access)"
+            else
+              echo "? OTHER: $model -> $(echo $result | head -c 100)"
+            fi
+          done
