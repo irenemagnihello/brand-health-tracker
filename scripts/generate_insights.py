@@ -46,11 +46,11 @@ By source: {by_source}
 Top topics: {top_topics}
 Crisis mentions: {crisis_count}
 
-Generate 3 actionable insights for a brand manager. Each insight should be:
-- 1 sentence max
-- Specific (with number/metric)
-- Action-oriented (what to do)
-- In English
+Generate 3 actionable insights. STRICT RULES:
+- Maximum 12 words per insight
+- Must include a specific number
+- Must suggest a concrete action
+- English only
 
 Format: just 3 bullets, no intro, no conclusion."""
 
@@ -67,3 +67,4 @@ Format: just 3 bullets, no intro, no conclusion."""
 
 if __name__ == "__main__":
     main()
+
