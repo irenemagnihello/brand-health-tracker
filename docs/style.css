@@ -608,12 +608,24 @@ body {
   margin-bottom: 12px;
 }
 
+.track-record-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.track-record-text {
+  display: flex;
+  flex-direction: column;
+}
+
 .score-cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 24px;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 32px;
 }
 
 .score-card {
@@ -664,4 +676,5 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
 
