@@ -53,9 +53,12 @@ def run_pipeline(brands: list = None, platforms: list = None) -> dict:
 
         # Add columns needed for Google Sheets / dashboard
         # Parse timestamps - handle mixed formats (ISO + Unix epoch)
-        enriched_df["date"] = pd.to_datetime(
+        # errors='coerce' returns NaT for unparseable values
+        parsed_dates = pd.to_datetime(
             enriched_df["timestamp"], format="mixed", errors="coerce"
-        ).dt.strftime("%Y-%m-%d")
+        )
+        enriched_df["date"] = parsed_dates.dt.strftime("%Y-%m-%d")
+        enriched_df["date"] = enriched_df["date"].fillna("")
         enriched_df["brand_label"] = enriched_df["brand_key"].map({
             "augustinus_bader": "Augustinus Bader",
             "the_ordinary": "The Ordinary",
@@ -150,4 +153,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
