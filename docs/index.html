@@ -3,12 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Irene Magni — Senior Growth, Data & Marketplace Consultant. Data-driven strategy, brand intelligence, and AI-augmented operations for global brands.">
+  <meta name="description" content="Irene Magni — Senior Growth, Data & Marketplace Consultant. AI-augmented brand tracking, marketplace operations, and consumer insights for global brands.">
   <title>Irene Magni — Senior Growth, Data & Marketplace Consultant · Berlin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Case study layout - 2 columns with boxes */
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .case-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .case-stack .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .case-stack .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .case-stack .card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-soft);
+      margin: 0 0 12px 0;
+    }
+    .case-stack .card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .case-stack .card li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-soft);
+    }
+    .case-stack .card li:last-child {
+      border-bottom: none;
+    }
+    .case-stack .card li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .case-architecture {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .case-arch-step {
+      text-align: center;
+      padding: 16px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .case-arch-step .icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+    .case-arch-step .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .case-arch-step .detail {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    /* Sidebar buttons */
+    .case-side {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .case-side .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .case-side .card h4 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .case-side .btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .case-side .btn {
+      display: block;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      text-align: center;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .case-side .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .case-side .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+    .case-side .btn-primary:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+    }
+    .case-side .btn-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+    /* Tags */
+    .tag-list-sm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag-sm {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+      .case-architecture {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .case-architecture {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -35,17 +201,6 @@
   </div>
 </header>
 
-<!-- THE APPROACH -->
-<section class="section section-intro">
-  <div class="container">
-    <div class="approach-card">
-      <p class="approach-quote">"I am a Senior Marketing &amp; Growth Consultant, not a software developer. I build custom AI setups as an operational force multiplier."</p>
-      <p>Traditionally, running multi-channel brand tracking, competitive teardowns, or marketplace analytics required large analyst teams and weeks of turnaround.</p>
-      <p>I leverage tailored AI architectures to streamline data ingestion, surface key anomalies, and draft preliminary strategic outputs independently. This allows me to deliver high-value insights, test growth hypotheses, and support decision-making with speed and flexibility.</p>
-    </div>
-  </div>
-</section>
-
 <!-- TRACK RECORD HIGHLIGHTS -->
 <section class="section section-highlights">
   <div class="container">
@@ -63,44 +218,106 @@
   <div class="container">
     <div class="featured-header">
       <span class="featured-badge">Case Study #1</span>
-      <h2 class="section-title">AI-Assisted Brand Perception &amp; Signal Monitoring</h2>
-      <p class="section-subtitle">Agile social listening and early-warning intelligence for consumer &amp; beauty brands.</p>
+      <h2 class="section-title">Brand Health Tracker</h2>
+      <p class="section-subtitle">AI-powered social listening for beauty brands. Monitor brand perception, surface crisis signals, and prep QBR-ready weekly briefings.</p>
     </div>
 
     <div class="case-grid">
-      <div class="case-left">
-        <h3 class="case-block-title">The Challenge</h3>
-        <p>Full-scale quantitative brand tracking for tier-1 accounts requires massive budgets and long lead times. However, growing brands and agile teams often need immediate, lightweight visibility into cross-channel consumer perception, emerging sentiment shifts, and early crisis signals without heavy overhead.</p>
+      <!-- LEFT COLUMN: text boxes -->
+      <div class="case-stack">
 
-        <h3 class="case-block-title">The AI-Augmented Setup</h3>
-        <p>I designed an agile intelligence workflow using Python scrapers and LLMs (Claude) to ingest raw, unstructured user content across TikTok, Reddit, and Instagram.</p>
-        <ul class="outputs-list">
-          <li><strong>Multi-source ingestion:</strong> scrapes mentions and discussions across high-engagement social channels.</li>
-          <li><strong>LLM data processing:</strong> evaluates sentiment, categorizes main conversation topics, and flags operational/PR risk signals per mention.</li>
-          <li><strong>Executive summary:</strong> feeds automated data into a Looker Studio dashboard and generates a structured 2-page briefing snapshot for fast team review.</li>
-        </ul>
+        <!-- Architecture -->
+        <div class="card">
+          <h3 class="card-title">Architecture</h3>
+          <div class="case-architecture">
+            <div class="case-arch-step">
+              <div class="icon">📡</div>
+              <div class="label">Apify Scrapers</div>
+              <div class="detail">Reddit · TikTok · Instagram</div>
+            </div>
+            <div class="case-arch-step">
+              <div class="icon">🧠</div>
+              <div class="label">Claude Analysis</div>
+              <div class="detail">Sentiment · Topics · Crisis</div>
+            </div>
+            <div class="case-arch-step">
+              <div class="icon">📊</div>
+              <div class="label">Dashboard</div>
+              <div class="detail">Looker Studio · Live</div>
+            </div>
+            <div class="case-arch-step">
+              <div class="icon">📄</div>
+              <div class="label">Weekly PDF</div>
+              <div class="detail">2-page executive briefing</div>
+            </div>
+          </div>
+        </div>
 
-        <h3 class="case-block-title">Strategic scope &amp; reality check</h3>
-        <p class="reality-quote">"This setup does not replace deep, multi-million-euro market research frameworks like the ones I managed for clients like BMW or ELC. Instead, it serves as a fast, flexible early-stage monitor — giving teams an immediate pulse on market perception and early signals at a fraction of the traditional turnaround time."</p>
+        <!-- What it produces -->
+        <div class="card">
+          <h3 class="card-title">What it produces</h3>
+          <ul>
+            <li><strong>Scrapes mentions</strong> across Reddit, TikTok, and Instagram for 3 beauty brands</li>
+            <li><strong>AI sentiment, topics, and crisis flags</strong> per mention (Claude Sonnet 4.5)</li>
+            <li><strong>Weekly 2-page PDF</strong> executive briefing with top mentions and crisis alerts</li>
+            <li><strong>Live dashboard</strong> with sentiment trends, topic distribution, crisis monitoring</li>
+          </ul>
+        </div>
+
+        <!-- Why I built this -->
+        <div class="card">
+          <h3 class="card-title">Why I built this</h3>
+          <p>Brand monitoring work I used to build manually at TLGG and TD Reply (Mercedes, BMW, L'Oréal) — same output, faster turnaround, fully independent.</p>
+          <p style="margin-top: 12px;">Use cases: weekly brand tracking, pre-QBR snapshots, crisis early-warning, and onboarding new brands without an analyst team.</p>
+          <p style="margin-top: 12px;"><em>Note on social listening: tracking what people say on social is important for brand work, but accessing quality data has real limitations (API access, data completeness, language coverage). This is a replicated version of the process I built manually before — limitations are visible. For more accurate analysis, deeper setup and paid APIs are required.</em></p>
+        </div>
+
       </div>
 
-      <div class="case-right">
-        <div class="side-card">
-          <h4>Demo &amp; Live dashboards</h4>
-          <a href="https://datastudio.google.com/reporting/d28e2afb-5f71-4799-a52f-ec39bcae422c" class="btn btn-secondary btn-block">📊 Demo Dashboard</a>
-          <a href="https://datastudio.google.com/reporting/2b3e470a-7478-4658-932d-474cb48c2674" class="btn btn-secondary btn-block">🔴 Live Dashboard</a>
+      <!-- RIGHT COLUMN: resource buttons -->
+      <div class="case-side">
+
+        <!-- Tech stack -->
+        <div class="card">
+          <h4>Tech stack</h4>
+          <div class="tag-list-sm">
+            <span class="tag-sm">Python</span>
+            <span class="tag-sm">Anthropic Claude</span>
+            <span class="tag-sm">Apify</span>
+            <span class="tag-sm">Looker Studio</span>
+            <span class="tag-sm">ReportLab</span>
+            <span class="tag-sm">GitHub Actions</span>
+          </div>
         </div>
-        <div class="side-card">
-          <h4>Sample PDF reports</h4>
-          <a href="https://irenemagnihello.github.io/brand-health-tracker/augustinus_bader_sample_report.pdf" class="btn btn-secondary btn-block">Augustinus Bader PDF</a>
-          <a href="https://irenemagnihello.github.io/brand-health-tracker/the_ordinary_sample_report.pdf" class="btn btn-secondary btn-block">The Ordinary PDF</a>
-          <a href="https://irenemagnihello.github.io/brand-health-tracker/glossier_sample_report.pdf" class="btn btn-secondary btn-block">Glossier PDF</a>
+
+        <!-- Dashboards -->
+        <div class="card">
+          <h4>Demo &amp; real data dashboards</h4>
+          <div class="btn-row">
+            <a href="https://datastudio.google.com/reporting/d28e2afb-5f71-4799-a52f-ec39bcae422c" class="btn">📊 Demo Dashboard</a>
+            <a href="https://datastudio.google.com/reporting/2b3e470a-7478-4658-932d-474cb48c2674" class="btn">🔴 Real Data Dashboard</a>
+          </div>
+          <p class="btn-note">Real scraping with Python · 3 brands · 3 channels</p>
         </div>
-        <div class="side-card">
+
+        <!-- Sample PDF -->
+        <div class="card">
+          <h4>Sample PDF report</h4>
+          <div class="btn-row">
+            <a href="https://irenemagnihello.github.io/brand-health-tracker/augustinus_bader_sample_report.pdf" class="btn">Augustinus Bader PDF</a>
+          </div>
+          <p class="btn-note">Sample 2-page executive briefing</p>
+        </div>
+
+        <!-- Code & docs -->
+        <div class="card">
           <h4>Code &amp; docs</h4>
-          <a href="https://github.com/irenemagnihello/brand-health-tracker" class="btn btn-primary btn-block">View code on GitHub</a>
-          <a href="https://github.com/irenemagnihello/brand-health-tracker#readme" class="btn btn-secondary btn-block">Read the case study</a>
+          <div class="btn-row">
+            <a href="https://github.com/irenemagnihello/brand-health-tracker" class="btn btn-primary">View code on GitHub</a>
+            <a href="https://github.com/irenemagnihello/brand-health-tracker#readme" class="btn">Read the case study</a>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -116,20 +333,22 @@
     </div>
 
     <div class="case-grid">
-      <div class="case-left">
-        <h3 class="case-block-title">The strategic focus</h3>
-        <p>Based on lessons from launching Houzz Italy and operating within Zalando Marketing Services, scaling a marketplace relies heavily on operational efficiency — balancing merchant acquisition, catalog health, and portfolio performance.</p>
-
-        <h3 class="case-block-title">The AI application (in development)</h3>
-        <p>I am building a framework demonstrating how AI workflows can assist daily marketplace operations:</p>
-        <ul class="outputs-list">
-          <li><strong>Merchant onboarding assistance:</strong> AI-driven analysis of onboarding bottlenecks to shorten merchant time-to-first-sale.</li>
-          <li><strong>Portfolio &amp; catalog insights:</strong> leveraging automated data extraction to evaluate seller performance, product category gaps, and competitive pricing trends.</li>
-          <li><strong>Operational health dashboards:</strong> synthesizing key platform metrics (GMV trends, funnel conversion, merchant retention) into clear operational priorities.</li>
-        </ul>
+      <div class="case-stack">
+        <div class="card">
+          <h3 class="card-title">The strategic focus</h3>
+          <p>Based on lessons from launching Houzz Italy and operating within Zalando Marketing Services, scaling a marketplace relies heavily on operational efficiency — balancing merchant acquisition, catalog health, and portfolio performance.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">The AI application (in development)</h3>
+          <ul>
+            <li><strong>Merchant onboarding assistance:</strong> AI-driven analysis of onboarding bottlenecks to shorten merchant time-to-first-sale.</li>
+            <li><strong>Portfolio &amp; catalog insights:</strong> leveraging automated data extraction to evaluate seller performance, product category gaps, and competitive pricing trends.</li>
+            <li><strong>Operational health dashboards:</strong> synthesizing key platform metrics (GMV trends, funnel conversion, merchant retention) into clear operational priorities.</li>
+          </ul>
+        </div>
       </div>
-      <div class="case-right">
-        <div class="side-card">
+      <div class="case-side">
+        <div class="card">
           <h4>Coming soon</h4>
           <p style="font-size: 13px; color: var(--text-soft);">Live demo and code repository for this case study will be published as the framework matures.</p>
         </div>
