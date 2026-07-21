@@ -575,3 +575,88 @@ body {
     transform: rotate(90deg);
   }
 }
+
+
+/* Track Record - full width + score cards bottom (v7) */
+.section-title-wide {
+  max-width: 100% !important;
+  width: 100%;
+  margin-bottom: 24px;
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+.track-record-heading {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+  margin: 32px 0 16px 0;
+  color: var(--text);
+}
+
+.track-record-list {
+  margin: 0 0 32px 0;
+  padding-left: 24px;
+  list-style: disc;
+}
+
+.track-record-list li {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+}
+
+.score-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  transition: border-color 0.15s ease;
+}
+
+.score-card:hover {
+  border-color: var(--accent);
+}
+
+.score-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.score-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .score-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .section-title-wide {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 500px) {
+  .score-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
