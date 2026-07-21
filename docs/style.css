@@ -647,6 +647,10 @@ body {
 }
 
 @media (max-width: 900px) {
+  .track-record-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
   .score-cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -660,3 +664,4 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
