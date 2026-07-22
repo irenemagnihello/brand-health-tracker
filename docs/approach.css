@@ -1,0 +1,43 @@
+/* APPROACH / GOAL: 2 columns layout (title left, text right) */
+.approach-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.approach-title {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.approach-body {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+.approach-body p {
+  margin: 0 0 14px 0;
+}
+.approach-body p:last-child {
+  margin-bottom: 0;
+}
+.approach-body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.approach-body em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+@media (max-width: 800px) {
+  .approach-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .approach-title {
+    font-size: 26px;
+  }
+}
