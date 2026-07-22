@@ -274,32 +274,41 @@
           </ul>
         </div>
 
-        <!-- 2. System Architecture -->
-        <div class="diagram-card">
-          <h3 class="diagram-title">System Architecture</h3>
-          <div class="diagram">
+        <!-- 2. System Architecture with Make Screenshot Integration -->
+        <div class="diagram-card" style="text-align: center;">
+          <h3 class="diagram-title" style="text-align: left;">System Architecture &amp; Automation Flow</h3>
+          <p style="font-size: 13px; color: var(--text-soft, #555); text-align: left; margin-bottom: 16px;">
+            End-to-end orchestration map running on Make: handling webhook triggers, regulatory database lookups, Claude AI compliance evaluation, JSON parsing, and real-time sheet synchronization.
+          </p>
+          
+          <!-- Immagine con il nome file corretto -->
+          <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-bottom: 16px; overflow: hidden;">
+            <img src="Screenshot 2026-07-22 at 18.28.58.png" alt="Make Automation Scenario Workflow" style="width: 100%; height: auto; border-radius: 6px; display: block;">
+          </div>
+
+          <div class="diagram" style="margin-top: 10px;">
             <div class="diagram-step">
               <div class="diagram-icon">📱</div>
               <div class="diagram-label">Mobile Web App</div>
-              <div class="diagram-detail">User Interface / SKU Submission</div>
+              <div class="diagram-detail">SKU Submission</div>
             </div>
             <div class="diagram-arrow">→</div>
             <div class="diagram-step">
               <div class="diagram-icon">⚡</div>
               <div class="diagram-label">Make Scenario</div>
-              <div class="diagram-detail">Webhook &amp; Guardrail Search</div>
+              <div class="diagram-detail">Webhook &amp; Logic</div>
             </div>
             <div class="diagram-arrow">→</div>
             <div class="diagram-step">
               <div class="diagram-icon">🧠</div>
               <div class="diagram-label">Claude AI</div>
-              <div class="diagram-detail">Compliance &amp; Localization</div>
+              <div class="diagram-detail">Compliance Check</div>
             </div>
             <div class="diagram-arrow">→</div>
             <div class="diagram-step">
               <div class="diagram-icon">📊</div>
               <div class="diagram-label">Data Sync</div>
-              <div class="diagram-detail">Google Sheets &amp; Live Workspace</div>
+              <div class="diagram-detail">Sheets Update</div>
             </div>
           </div>
         </div>
@@ -325,7 +334,7 @@
 
       </div>
 
-      <!-- Right Column: ACTION HUB WITH GITHUB REPO LINK -->
+      <!-- Right Column: ACTION HUB -->
       <div class="featured-side">
         
         <!-- LIVE DEMOS -->
@@ -339,7 +348,7 @@
           <a href="https://docs.google.com/spreadsheets/d/1qaQFf1wQhNe4JaSwfG5PLK1nXDeYW5af8InoqdTwIHQ/edit?usp=sharing" target="_blank" class="btn btn-secondary btn-block" style="border-color: #d97736; color: #d97736; text-align: center; font-weight: 600;">📊 Live Google Sheets Workspace</a>
         </div>
 
-        <!-- CODE & DOCUMENTATION (LINKATO AL TUO NUOVO REPO) -->
+        <!-- CODE & DOCUMENTATION -->
         <div class="side-card" style="background: #ffffff; border: 1px solid #e0e0e0; padding: 20px;">
           <h4 style="font-size: 12px; letter-spacing: 1px; margin-bottom: 8px;">💻 PROCESS &amp; METHODOLOGY</h4>
           <p style="font-size: 12px; color: #666; margin-bottom: 12px;">Review full Make scenarios, AI prompt logic, and GTM architecture:</p>
