@@ -610,8 +610,8 @@ body {
 
 .track-record-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
   align-items: start;
   margin-top: 24px;
 }
@@ -619,6 +619,20 @@ body {
 .track-record-text {
   display: flex;
   flex-direction: column;
+}
+
+.track-record-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: start;
+}
+
+.track-record-right .btn-sm {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
 }
 
 .score-cards-grid {
@@ -676,5 +690,6 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
 
 
