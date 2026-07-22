@@ -3,87 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Irene Magni — Senior Growth, Data & Marketplace Consultant. Data-driven strategy, brand intelligence, and AI-augmented operations for global brands.">
+  <meta name="description" content="Irene Magni — Senior Growth, Data & Marketplace Consultant. AI-augmented brand tracking, marketplace operations, and consumer insights for global brands.">
   <title>Irene Magni — Senior Growth, Data & Marketplace Consultant · Berlin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* Track Record: 2 columns - text left, action buttons right */
-    .track-grid {
+    /* Two-column layout for case study */
+    .featured-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
       align-items: start;
     }
-    .track-left h2 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(28px, 4vw, 40px);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-      color: var(--text);
-    }
-    .track-left p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--text-soft);
-      margin-bottom: 12px;
-    }
-    .track-right {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .track-btn {
+    .featured-main {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 24px 16px;
+      gap: 20px;
+    }
+    .featured-side {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .diagram-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      text-decoration: none;
+      padding: 24px;
+    }
+    .diagram {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+    .diagram-step {
       text-align: center;
-      color: var(--text);
-      transition: all 0.15s ease;
-      cursor: pointer;
-      min-height: 120px;
+      padding: 16px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
     }
-    .track-btn:hover {
-      border-color: var(--accent);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    .diagram-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
     }
-    .track-btn .icon {
-      font-size: 26px;
-    }
-    .track-btn .label {
-      font-size: 14px;
+    .diagram-label {
+      font-size: 13px;
       font-weight: 600;
       color: var(--text);
+      margin-bottom: 4px;
     }
-    .track-btn .sublabel {
-      font-size: 12px;
+    .diagram-detail {
+      font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.4;
+    }
+    .diagram-arrow {
+      text-align: center;
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .outputs-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .outputs-card .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .outputs-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .outputs-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-soft);
+    }
+    .outputs-list li:last-child { border-bottom: none; }
+    .outputs-list li strong { color: var(--text); font-weight: 600; }
+    .side-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .side-card h4 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+    }
+    .btn-block {
+      display: block;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .btn-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-style: italic;
     }
     @media (max-width: 900px) {
-      .track-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      .track-right {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    @media (max-width: 480px) {
-      .track-right {
-        grid-template-columns: 1fr;
-      }
+      .featured-grid { grid-template-columns: 1fr; }
+      .diagram { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -112,58 +163,35 @@
 <!-- INTRO -->
 <section class="section section-intro">
   <div class="container">
-    <div class="intro-tagline">
-      <span class="intro-tag">Personal Portfolio</span>
-    </div>
-    <h2 class="section-title">Career &amp; AI Case Studies</h2>
-    <p class="intro-lead">A collection of career milestones and hands-on case studies highlighting my methodology for deploying AI across real-world business operations.</p>
-    <p class="intro-note"><strong>Note:</strong> These self-built case studies are lean proofs-of-concept. They demonstrate my AI fluency and workflow logic — showing how I leverage AI as an execution multiplier, not a replacement for dedicated teams.</p>
+    <h2 class="section-title">Data-driven marketing consultant, growth expert for established brands, startups, and marketplaces</h2>
+    <p>10+ years inside tier-1 brands — launching marketplaces (Houzz Italy from scratch in 2015), tracking brand health for Mercedes-Benz (TLGG) and BMW (TD Reply), data consulting for Adidas and Coca-Cola, and senior insights consulting for L'Oréal, ELC, and Coach.</p>
+    <p>These case studies show how I now work: a senior marketing operator's expertise, paired with AI workflows that let me run faster, deeper, and more independently than I could with just an analyst team.</p>
+    <p>These case studies are personal portfolio pieces, built from my own hands-on experience using AI. They showcase a way of working I want to bring to my next role.</p>
   </div>
 </section>
 
-<!-- TRACK RECORD: 2 columns -->
-<section class="section section-tracks">
+<!-- TRACK RECORD -->
+<section class="section section-highlights">
   <div class="container">
     <div class="track-grid">
-      <!-- LEFT: text -->
-      <div class="track-left">
-        <h3 class="track-record-heading">Track Record Highlights</h3>
-        <ul class="track-record-list">
-          <li><strong>Up to €1.5M+ budget</strong> managed in high-impact insights and strategic analytics portfolios (including BMW, Coca-Cola, Mercedes-Benz, ELC, L'Oréal).</li>
-          <li><strong>Marketplace GTM Launch:</strong> led the end-to-end Go-To-Market launch of Houzz Italy from the ground up and Houzz Marketplace in EU, scaling local seller networks and platform operations.</li>
-          <li><strong>10+ Years</strong> operating across Brand Strategy, Growth Marketing, and E-Commerce ecosystems.</li>
-        </ul>
+      <div class="track-item">
+        <div class="track-num">€1.5M+</div>
+        <div class="track-label">Managed in insights &amp; strategic analytics portfolios, incl. BMW, Mercedes-Benz, ELC, L'Oréal</div>
       </div>
-
-      <!-- RIGHT: 4 action buttons -->
-      <div class="track-right">
-        <a href="#case-study-1" class="track-btn">
-          <div class="icon">📈</div>
-          <div class="label">Data-Driven Growth</div>
-          <div class="sublabel">Brand tracking &amp; insights</div>
-        </a>
-        <a href="#case-study-2" class="track-btn">
-          <div class="icon">🛒</div>
-          <div class="label">Marketplace Ops</div>
-          <div class="sublabel">Merchant &amp; catalog analytics</div>
-        </a>
-        <a href="#roadmap" class="track-btn">
-          <div class="icon">🔍</div>
-          <div class="label">Competitive Analysis</div>
-          <div class="sublabel">Pricing &amp; positioning</div>
-        </a>
-        <a href="https://github.com/irenemagnihello/brand-health-tracker" class="track-btn" target="_blank">
-          <div class="icon">🤖</div>
-          <div class="label">AI Workflows</div>
-          <div class="sublabel">Python + Claude</div>
-        </a>
+      <div class="track-item">
+        <div class="track-num">GTM</div>
+        <div class="track-label">End-to-end launch of Houzz Italy from scratch — local seller network, platform ops</div>
+      </div>
+      <div class="track-item">
+        <div class="track-num">10+ yrs</div>
+        <div class="track-label">Operating across brand strategy, growth marketing, and marketplace ecosystems</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CASE STUDY #1 -->
-<section id="case-study-1" class="section section-featured">
+<section class="section section-featured">
   <div class="container">
     <div class="featured-header">
       <span class="featured-badge">Case Study #1</span>
@@ -171,45 +199,94 @@
       <p class="section-subtitle">Agile social listening and early-warning intelligence for consumer &amp; beauty brands.</p>
     </div>
 
-    <div class="cs1-block">
-      <h3 class="cs1-block-title">Why social listening matters</h3>
-      <p>Tracking what people say about a brand on social media is essential — it surfaces perception shifts, complaint patterns, and product feedback weeks before any survey would catch them. But getting reliable cross-platform data at scale is hard. Most platforms restrict scraping, sentiment APIs are costly, and real-time monitoring tools charge premium prices.</p>
-      <p class="cs1-note">This is a <strong>replicated version</strong> of the process I used to run manually at TLGG (Mercedes) and TD Reply (BMW, L'Oréal). I set it up myself using Python, Apify, and Claude. Limitations are visible in the data — for a more accurate analysis, significantly more effort is required.</p>
-    </div>
+    <div class="featured-grid">
+      <div class="featured-main">
+        <div class="diagram-card">
+          <h3 class="diagram-title">Architecture</h3>
+          <div class="diagram">
+            <div class="diagram-step">
+              <div class="diagram-icon">📡</div>
+              <div class="diagram-label">Apify Scrapers</div>
+              <div class="diagram-detail">Reddit · TikTok · Instagram</div>
+            </div>
+            <div class="diagram-arrow">→</div>
+            <div class="diagram-step">
+              <div class="diagram-icon">🧠</div>
+              <div class="diagram-label">Claude Analysis</div>
+              <div class="diagram-detail">Sentiment · Topics · Crisis</div>
+            </div>
+            <div class="diagram-arrow">→</div>
+            <div class="diagram-step">
+              <div class="diagram-icon">📊</div>
+              <div class="diagram-label">Dashboard</div>
+              <div class="diagram-detail">Looker Studio · Live</div>
+            </div>
+            <div class="diagram-arrow">→</div>
+            <div class="diagram-step">
+              <div class="diagram-icon">📄</div>
+              <div class="diagram-label">Weekly PDF</div>
+              <div class="diagram-detail">2-page executive briefing</div>
+            </div>
+          </div>
+        </div>
 
-    <div class="cs1-grid">
-      <div class="cs1-col">
-        <h3 class="cs1-col-title">The AI-Augmented Setup</h3>
-        <ul class="cs1-list">
-          <li><strong>Multi-source ingestion:</strong> scrapes mentions across TikTok, Reddit, Instagram.</li>
-          <li><strong>LLM processing:</strong> Claude evaluates sentiment, topics, crisis signals per mention.</li>
-          <li><strong>Executive output:</strong> Looker Studio dashboard + 2-page weekly PDF briefing.</li>
-        </ul>
+        <div class="outputs-card">
+          <h3 class="card-title">Strategic Intent</h3>
+          <p style="font-size: 14px; color: var(--text-soft); line-height: 1.6;">Tracking what people say on social is essential for brand work, but accessing quality data has real limitations (API access, data completeness, language coverage).</p>
+          <p style="font-size: 14px; color: var(--text-soft); line-height: 1.6; margin-top: 10px;">This is a replicated version of the process I built manually at TLGG (Mercedes-Benz) and TD Reply (BMW, L'Oréal). I set it up myself using Python, Apify, and Claude. Limitations are visible in the data — for a more accurate analysis, significantly more effort is required.</p>
+          <p style="font-size: 14px; color: var(--text-soft); line-height: 1.6; margin-top: 10px;">Use cases: weekly brand tracking, pre-QBR snapshots, crisis early-warning, and onboarding new brands without an analyst team.</p>
+        </div>
 
-        <h3 class="cs1-col-title">Scope &amp; limitations</h3>
-        <ul class="cs1-list">
-          <li>Channels: Reddit, TikTok, Instagram. News / blogs / Facebook / YouTube require additional setup.</li>
-          <li>Time window: defaults to last 7 days; TikTok may surface older top videos.</li>
-          <li>Language: English-only model. No real-time streaming, no paid API access for Instagram/Facebook.</li>
-        </ul>
+        <div class="outputs-card">
+          <h3 class="card-title">What it produces</h3>
+          <ul class="outputs-list">
+            <li><strong>Multi-source ingestion</strong> across Reddit, TikTok, Instagram</li>
+            <li><strong>AI sentiment, topics, and crisis flags</strong> per mention (Claude Sonnet 4.5)</li>
+            <li><strong>Weekly 2-page PDF</strong> executive briefing with top mentions and crisis alerts</li>
+            <li><strong>Looker Studio dashboard</strong> with sentiment trends, topic distribution, crisis monitoring</li>
+          </ul>
+        </div>
+
+        <div class="outputs-card">
+          <h3 class="card-title">Scope &amp; limitations</h3>
+          <ul class="outputs-list">
+            <li><strong>Channels covered:</strong> Reddit, TikTok, Instagram. News, blogs, Facebook, YouTube require additional setup (v2).</li>
+            <li><strong>Time window:</strong> defaults to last 7 days; TikTok may surface older top videos.</li>
+            <li><strong>Language:</strong> English-only model. No real-time streaming, no paid API access for Instagram/Facebook.</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="cs1-col">
-        <div class="cs1-side">
-          <h4 class="cs1-side-title">Live data</h4>
-          <a href="https://datastudio.google.com/reporting/2b3e470a-7478-4658-932d-474cb48c2674" class="btn btn-secondary btn-block btn-sm">🔴 Real Data Dashboard (real scraping with Python)</a>
-          <a href="https://datastudio.google.com/reporting/d28e2afb-5f71-4799-a52f-ec39bcae422c" class="btn btn-secondary btn-block btn-sm">📊 Demo Dashboard (synthetic data)</a>
+      <div class="featured-side">
+        <div class="side-card">
+          <h4>Tech stack</h4>
+          <div class="tag-list">
+            <span class="tag">Python</span>
+            <span class="tag">Anthropic Claude</span>
+            <span class="tag">Apify</span>
+            <span class="tag">Looker Studio</span>
+            <span class="tag">ReportLab</span>
+            <span class="tag">GitHub Actions</span>
+          </div>
         </div>
 
-        <div class="cs1-side">
-          <h4 class="cs1-side-title">Sample PDF report</h4>
-          <a href="https://irenemagnihello.github.io/brand-health-tracker/augustinus_bader_sample_report.pdf" class="btn btn-secondary btn-block btn-sm">Augustinus Bader PDF</a>
+        <div class="side-card">
+          <h4>Demo &amp; real data dashboards</h4>
+          <a href="https://datastudio.google.com/reporting/d28e2afb-5f71-4799-a52f-ec39bcae422c" class="btn btn-secondary btn-block">📊 Demo Dashboard</a>
+          <a href="https://datastudio.google.com/reporting/2b3e470a-7478-4658-932d-474cb48c2674" class="btn btn-secondary btn-block">🔴 Real Data Dashboard</a>
+          <p class="btn-note">Real scraping with Python · 3 brands · 3 channels</p>
         </div>
 
-        <div class="cs1-side">
-          <h4 class="cs1-side-title">Code</h4>
-          <a href="https://github.com/irenemagnihello/brand-health-tracker" class="btn btn-primary btn-block btn-sm">View code on GitHub</a>
-          <a href="https://github.com/irenemagnihello/brand-health-tracker#readme" class="btn btn-secondary btn-block btn-sm">Read the case study</a>
+        <div class="side-card">
+          <h4>Sample PDF report</h4>
+          <a href="https://irenemagnihello.github.io/brand-health-tracker/augustinus_bader_sample_report.pdf" class="btn btn-secondary btn-block">Augustinus Bader PDF</a>
+          <p class="btn-note">Sample 2-page executive briefing</p>
+        </div>
+
+        <div class="side-card">
+          <h4>Code &amp; docs</h4>
+          <a href="https://github.com/irenemagnihello/brand-health-tracker" class="btn btn-primary btn-block">View code on GitHub</a>
+          <a href="https://github.com/irenemagnihello/brand-health-tracker#readme" class="btn btn-secondary btn-block">Read the case study</a>
         </div>
       </div>
     </div>
@@ -217,58 +294,65 @@
 </section>
 
 <!-- CASE STUDY #2 -->
-<section id="case-study-2" class="section section-featured" style="background: var(--bg);">
+<section class="section section-featured" style="background: var(--bg);">
   <div class="container">
     <div class="featured-header">
       <span class="featured-badge">Case Study #2 — In development</span>
       <h2 class="section-title">AI for Marketplace Operations &amp; Growth</h2>
-      <p class="section-subtitle">Streamlining merchant analytics, onboarding flows, and marketplace health.</p>
+      <p class="section-subtitle">Streamlining merchant analytics, onboarding flows, and marketplace performance</p>
     </div>
 
-    <div class="cs1-grid">
-      <div class="cs1-col">
-        <h3 class="cs1-col-title">The strategic focus</h3>
-        <p>Based on lessons from launching Houzz Italy and operating within Zalando Marketing Services, scaling a marketplace relies heavily on operational efficiency — balancing merchant acquisition, catalog health, and portfolio performance.</p>
+    <div class="featured-grid">
+      <div class="featured-main">
+        <div class="outputs-card">
+          <h3 class="card-title">The strategic focus</h3>
+          <p style="font-size: 14px; color: var(--text-soft); line-height: 1.6;">Based on lessons from launching Houzz Italy and operating within Zalando Marketing Services, scaling a marketplace relies heavily on operational efficiency — balancing merchant acquisition, catalog health, and portfolio performance.</p>
+        </div>
 
-        <h3 class="cs1-col-title">AI application (in development)</h3>
-        <ul class="cs1-list">
-          <li><strong>Merchant onboarding:</strong> AI analysis of bottlenecks to shorten time-to-first-sale.</li>
-          <li><strong>Catalog insights:</strong> automated evaluation of seller performance, category gaps, pricing.</li>
-          <li><strong>Operational dashboards:</strong> GMV trends, funnel conversion, merchant retention.</li>
-        </ul>
+        <div class="outputs-card">
+          <h3 class="card-title">The AI application (in development)</h3>
+          <ul class="outputs-list">
+            <li><strong>Merchant onboarding assistance:</strong> AI-driven analysis of onboarding bottlenecks to shorten merchant time-to-first-sale.</li>
+            <li><strong>Portfolio &amp; catalog insights:</strong> leveraging automated data extraction to evaluate seller performance, product category gaps, and competitive pricing trends.</li>
+            <li><strong>Operational health dashboards:</strong> synthesizing key platform metrics (GMV trends, funnel conversion, merchant retention) into clear operational priorities.</li>
+          </ul>
+        </div>
       </div>
-      <div class="cs1-col">
-        <div class="cs1-side">
-          <h4 class="cs1-side-title">Coming soon</h4>
-          <p style="font-size: 13px; color: var(--text-soft);">Live demo + code repository to be published as the framework matures.</p>
+
+      <div class="featured-side">
+        <div class="side-card">
+          <h4>Coming soon</h4>
+          <p style="font-size: 13px; color: var(--text-soft);">Live demo and code repository for this case study will be published as the framework matures.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section id="roadmap" class="section section-roadmap">
+<!-- MORE CASE STUDIES -->
+<section class="section section-featured">
   <div class="container">
-    <div class="featured-header">
-      <span class="featured-badge">Roadmap</span>
-      <h2 class="section-title">Upcoming case studies</h2>
+<div class="featured-header">
+      <span class="featured-badge">More case studies in development</span>
+      <h2 class="section-title">What's next</h2>
+      <p class="section-subtitle">This portfolio is built iteratively to reflect modern marketing operations.</p>
+      <p>Every case study explores a different angle of my work — showing how AI acts as a force multiplier across brand intelligence, growth analytics, and marketplace management.</p>
     </div>
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-icon">📊</div>
+    <div class="bring-grid">
+      <div class="bring-card">
+        <div class="bring-icon">📊</div>
         <h3>Competitive Intelligence Tracker</h3>
-        <p>Automated monitoring of competitor pricing, positioning, and promotional campaigns.</p>
+        <p>Automated monitoring of competitor pricing shifts, positioning, and promotional campaigns.</p>
       </div>
-      <div class="roadmap-card">
-        <div class="roadmap-icon">📈</div>
-        <h3>Campaign Performance Pipeline</h3>
+      <div class="bring-card">
+        <div class="bring-icon">📈</div>
+        <h3>Campaign &amp; Content Performance Pipeline</h3>
         <p>AI-assisted performance analysis to refine content briefs and marketing ROI.</p>
       </div>
-      <div class="roadmap-card">
-        <div class="roadmap-icon">📋</div>
-        <h3>QBR Prep Assistant</h3>
-        <p>Workflow to aggregate performance metrics and draft strategic narrative outlines.</p>
+      <div class="bring-card">
+        <div class="bring-icon">📋</div>
+        <h3>Executive QBR Prep Assistant</h3>
+        <p>Workflow to aggregate raw performance metrics and draft strategic narrative outlines for quarterly reviews.</p>
       </div>
     </div>
   </div>
@@ -277,7 +361,7 @@
 <!-- EXPERIENCE -->
 <section class="section section-experience">
   <div class="container">
-    <h2 class="section-title">Experience &amp; career footprint</h2>
+    <h2 class="section-title">Career Track Record</h2>
     <div class="experience-list">
       <div class="experience-item">
         <div class="experience-year">2024 — 2026</div>
@@ -351,5 +435,3 @@
 
 </body>
 </html>
-
-
